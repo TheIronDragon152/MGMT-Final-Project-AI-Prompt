@@ -1,3 +1,61 @@
 import json
-class KetPartner:
-def_init_(self, name, partner_type
+class KeyPartner:
+def __init__(self, name, partner_type, role, contact_email):
+self.name = name
+self.partner_type = partner_type # e.g., Supplier, Location, Maintenance
+self.role = role
+self.contact_email = contact_email
+def to_dict(self):
+return {
+"name": self.name,
+"type": self.partner_type,
+"role": self.role,
+"contact_email": self.contact_email
+}
+class VendingBusinessPartners:
+def __init__(self, business_name):
+self.business_name = business_name
+self.partners = []
+def add_partner(self, partner):
+self.partners.append(partner)
+def export_to_json(self, filename="key_partners.json"):
+data = {
+"business_name": self.business_name,
+"key_partners": [p.to_dict() for p in self.partners]
+}
+with open(filename, "w") as f:
+json.dump(data, f, indent=4)
+print(f" Successfully exported partners to {filename}")
+Example Usage
+if __name__ == "__main__":
+business = VendingBusinessPartners("Apex Vending Co.")
+# 1. Location Partners
+business.add_partner(KeyPartner(
+name="Downtown Fitness Center",
+partner_type="Location Provider",
+role="Hosts the healthy snack vending machine; provides electricity.",
+contact_email="facilities@downtownfitness.com"
+))
+# 2. Inventory Suppliers
+business.add_partner(KeyPartner(
+name="Wholesale Snack Distributors Inc.",
+partner_type="Inventory Supplier",
+role="Supplies chips, drinks, and candy at wholesale prices.",
+contact_email="orders@wholesalesnacks.com"
+))
+# 3. Machine Manufacturers / Maintenance
+business.add_partner(KeyPartner(
+name="SmartVend Tech Solutions",
+partner_type="Technical & Maintenance Partner",
+role="Provides the physical machines and quarterly software updates.",
+contact_email="support@smartvendtech.com"
+))
+# 4. Payment Processors
+business.add_partner(KeyPartner(
+name="Nayax / Cantaloupe Systems",
+partner_type="Payment Processor",
+role="Handles credit card merchant services and cellular telemetry.",
+contact_email="merchant@paymentproc.com"
+))
+# Run the export
+business.export_to_json()
